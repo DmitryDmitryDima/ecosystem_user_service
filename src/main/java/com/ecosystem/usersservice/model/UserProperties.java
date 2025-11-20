@@ -19,7 +19,7 @@ public class UserProperties {
     private Long id;
 
 
-    @Column(unique = true)
+    @Column(unique = true, columnDefinition = "uuid")
     private UUID userUUID;
 
     // данное поле дублируется с auth
