@@ -1,5 +1,6 @@
 package com.ecosystem.usersservice.service;
 
+import com.ecosystem.usersservice.dto.SecurityContext;
 import com.ecosystem.usersservice.dto.UserPropertiesDTO;
 import com.ecosystem.usersservice.model.UserProperties;
 import com.ecosystem.usersservice.repository.UserPropertiesRepository;
@@ -18,11 +19,17 @@ public class UserService {
     @Autowired
     private UserPropertiesRepository userPropertiesRepository;
 
-    // uuid того, кто запрашивает, берется из headers
-    public UserPropertiesDTO getUserPropertiesByUUID(UUID uuid){
-        Optional<UserProperties> user = userPropertiesRepository.findByUserUUID(uuid);
-        return null;
+
+
+    // todo пока что варианты для зарегистрированных пользователей
+    public UserPropertiesDTO getUserByUsername(String username, SecurityContext securityContext){
+        System.out.println(securityContext+" for"+username);
+
+        return new UserPropertiesDTO();
     }
+
+
+
 
 
 

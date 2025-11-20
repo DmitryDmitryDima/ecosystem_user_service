@@ -11,6 +11,8 @@ public class UserPropertiesDTO {
 
     private String about;
 
+
+    // system storage -> images (обезличено)
     private String avatarLink;
 
 
