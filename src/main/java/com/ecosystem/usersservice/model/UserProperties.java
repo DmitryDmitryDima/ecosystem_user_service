@@ -22,13 +22,9 @@ public class UserProperties {
     @Column(unique = true, columnDefinition = "uuid")
     private UUID userUUID;
 
-    // данное поле дублируется с auth
-    @Column(nullable = false)
-    private String username;
 
-    // данное поле дублируется с auth
-    @Column (nullable = false)
-    private String role;
+
+
 
 
 

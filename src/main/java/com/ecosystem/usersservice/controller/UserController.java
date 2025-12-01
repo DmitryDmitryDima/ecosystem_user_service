@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/profile")
@@ -21,12 +22,12 @@ public class UserController {
     основная информация о пользователе
     Доступна всем
      */
-    @GetMapping("/{username}")
-    public ResponseEntity<UserPropertiesDTO> showUser(@PathVariable("username") String observedUsername,
+    @GetMapping("/{targetUUID}")
+    public ResponseEntity<UserPropertiesDTO> showUser(@PathVariable("targetUUID") String targetUUID,
                                    @RequestHeader Map<String, String> headers){
 
 
-        return ResponseEntity.ok(userService.getUserByUsername(observedUsername, SecurityContext.generateContext(headers)));
+        return ResponseEntity.ok(userService.getUser(UUID.fromString(targetUUID), SecurityContext.generateContext(headers)));
 
 
 

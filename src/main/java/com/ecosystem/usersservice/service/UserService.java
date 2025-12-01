@@ -21,11 +21,20 @@ public class UserService {
 
 
 
-    // todo пока что варианты для зарегистрированных пользователей
-    public UserPropertiesDTO getUserByUsername(String username, SecurityContext securityContext){
-        System.out.println(securityContext+" for"+username);
+    // todo добавляем проверку безопасности - к примеру. профиль может быть закрыт
 
-        return new UserPropertiesDTO();
+    public UserPropertiesDTO getUser(UUID target, SecurityContext securityContext){
+
+        Optional<UserProperties> propertiesCheck = userPropertiesRepository.findByUserUUID(target);
+        if (propertiesCheck.isEmpty()) throw new IllegalStateException("user not found");
+
+        UserProperties properties = propertiesCheck.get();
+
+
+        return UserPropertiesDTO.builder()
+                .about(properties.getAbout())
+                .avatarLink(properties.getAvatarLink())
+                .build();
     }
 
 
