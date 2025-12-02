@@ -21,20 +21,27 @@ public class UserService {
 
 
 
-    // todo добавляем проверку безопасности - к примеру. профиль может быть закрыт
+    // todo все случаи, касающиеся безопасности и прав, будут генерировать специальное исклюение
 
-    public UserPropertiesDTO getUser(UUID target, SecurityContext securityContext){
+    public Optional<UserPropertiesDTO> getUser(SecurityContext securityContext){
 
-        Optional<UserProperties> propertiesCheck = userPropertiesRepository.findByUserUUID(target);
-        if (propertiesCheck.isEmpty()) throw new IllegalStateException("user not found");
+        if (securityContext.getTargetUUID()==null) {
+            return Optional.empty();
+        }
+
+
+
+        Optional<UserProperties> propertiesCheck = userPropertiesRepository.findByUserUUID(securityContext.getTargetUUID());
+        if (propertiesCheck.isEmpty()) return Optional.empty();
 
         UserProperties properties = propertiesCheck.get();
+        System.out.println(properties);
 
 
-        return UserPropertiesDTO.builder()
+        return Optional.of(UserPropertiesDTO.builder()
                 .about(properties.getAbout())
                 .avatarLink(properties.getAvatarLink())
-                .build();
+                .build());
     }
 
 

@@ -16,12 +16,9 @@ import java.util.UUID;
 public class UserCreationEvent {
 
 
-    // часть контекста, дублируемого в user service
+
 
     @NotNull
     private UUID uuid;
-    @NotBlank
-    private String role;
-    @NotBlank
-    private String username;
+
 }

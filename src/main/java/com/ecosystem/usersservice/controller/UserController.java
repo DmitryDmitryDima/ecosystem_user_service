@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -20,14 +21,26 @@ public class UserController {
 
     /*
     основная информация о пользователе
-    Доступна всем
+    Доступна всем, если допускают настройки приватности
      */
-    @GetMapping("/{targetUUID}")
-    public ResponseEntity<UserPropertiesDTO> showUser(@PathVariable("targetUUID") String targetUUID,
-                                   @RequestHeader Map<String, String> headers){
+    @GetMapping
+    public ResponseEntity<UserPropertiesDTO> showUser(
+                                   @RequestHeader Map<String, String> headers, @RequestParam("targetUsername") String targetUsername){
+
+        System.out.println("user properties extraction");
+
+        SecurityContext securityContext = SecurityContext.generateContext(headers);
+        UUID target = securityContext.getTargetUUID();
+        if (target == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        Optional<UserPropertiesDTO> userPresenceCheck = userService.getUser(securityContext);
+
+        return userPresenceCheck.map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
 
 
-        return ResponseEntity.ok(userService.getUser(UUID.fromString(targetUUID), SecurityContext.generateContext(headers)));
+
 
 
 

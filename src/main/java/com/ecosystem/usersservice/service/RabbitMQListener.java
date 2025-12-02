@@ -60,9 +60,8 @@ public class RabbitMQListener {
     private void processUserCreation(UserCreationEvent event){
         UserProperties newUserQuery = new UserProperties();
         newUserQuery.setUserUUID(event.getUuid());
-        newUserQuery.setAbout("hello, I am "+event.getUsername());
-        newUserQuery.setUsername(event.getUsername());
-        newUserQuery.setRole(event.getRole());
+        newUserQuery.setAbout("hello !");
+
 
         userPropertiesRepository.save(newUserQuery);
     }
