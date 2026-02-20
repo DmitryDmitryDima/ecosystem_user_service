@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-
+    // кто то является генератором, а кто то подписчиком. Много подписчиков. один генератор
     @Value("${users.main_events.queue.name}")
     private String USERS_EVENTS_QUEUE_NAME;
 
