@@ -23,7 +23,7 @@ public class UserService {
 
     // todo все случаи, касающиеся безопасности и прав, будут генерировать специальное исклюение
 
-    public Optional<UserPropertiesDTO> getUser(SecurityContext securityContext){
+    public Optional<UserPropertiesDTO> getUser(SecurityContext securityContext, String targetUsername){
 
         if (securityContext.getTargetUUID()==null) {
             return Optional.empty();
@@ -32,10 +32,23 @@ public class UserService {
 
 
         Optional<UserProperties> propertiesCheck = userPropertiesRepository.findByUserUUID(securityContext.getTargetUUID());
-        if (propertiesCheck.isEmpty()) return Optional.empty();
+        if (propertiesCheck.isEmpty()){
+            if (securityContext.getUuid().equals(securityContext.getTargetUUID())){
+                UserProperties newUserQuery = new UserProperties();
+                newUserQuery.setUserUUID(securityContext.getUuid());
+                newUserQuery.setAbout("hello from "+targetUsername+"!");
+                newUserQuery = userPropertiesRepository.saveAndFlush(newUserQuery);
+                UserPropertiesDTO dto = UserPropertiesDTO.builder()
+                        .about(newUserQuery.getAbout())
+                        .build();
+
+                return Optional.of(dto);
+            }
+            else return Optional.empty();
+        }
 
         UserProperties properties = propertiesCheck.get();
-        System.out.println(properties);
+
 
 
         return Optional.of(UserPropertiesDTO.builder()

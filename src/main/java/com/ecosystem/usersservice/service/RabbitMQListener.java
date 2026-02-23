@@ -36,6 +36,8 @@ public class RabbitMQListener {
     @RabbitListener(queues = {"${users.main-events.queue.name}"})
     public void receiveUserCreationEvent(@Payload String payload, @Header("event_type") String eventType) throws Exception {
 
+        // todo данная логика больше не актуальна - пользователь создается лениво, при первом запросе после регистрации
+        /*
         ObjectMapper objectMapper = new ObjectMapper();
         if (eventType.equals("user_creation")){
             UserCreationEvent userCreationEvent = objectMapper.readValue(payload, UserCreationEvent.class);
@@ -44,6 +46,8 @@ public class RabbitMQListener {
             processUserCreation(userCreationEvent);
 
         }
+
+         */
 
 
 

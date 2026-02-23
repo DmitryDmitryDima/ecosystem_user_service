@@ -35,7 +35,7 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
 
-        Optional<UserPropertiesDTO> userPresenceCheck = userService.getUser(securityContext);
+        Optional<UserPropertiesDTO> userPresenceCheck = userService.getUser(securityContext, targetUsername);
 
         return userPresenceCheck.map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
 
