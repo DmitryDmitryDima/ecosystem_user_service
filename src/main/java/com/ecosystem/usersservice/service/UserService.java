@@ -4,9 +4,11 @@ import com.ecosystem.usersservice.dto.SecurityContext;
 import com.ecosystem.usersservice.dto.UserPropertiesDTO;
 import com.ecosystem.usersservice.model.UserProperties;
 import com.ecosystem.usersservice.repository.UserPropertiesRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,9 +22,27 @@ public class UserService {
     private UserPropertiesRepository userPropertiesRepository;
 
 
+    /*
+    todo по идее приватная информация может быть попросту не загружена в dto
+     */
+
+    @Transactional
+    public List<UserPropertiesDTO> getUsers(SecurityContext securityContext, List<UUID> uuids){
+        return userPropertiesRepository.findAllByUserUUIDIn(uuids).stream().map(
+            entity-> UserPropertiesDTO.builder()
+                    .uuid(entity.getUserUUID())
+                    .about(entity.getAbout())
+                    .avatarLink(entity.getAvatarLink())
+                    .build()
+        ).toList();
+
+
+    }
+
+
 
     // todo все случаи, касающиеся безопасности и прав, будут генерировать специальное исклюение
-
+    @Transactional
     public Optional<UserPropertiesDTO> getUser(SecurityContext securityContext, String targetUsername){
 
         if (securityContext.getTargetUUID()==null) {
@@ -52,6 +72,7 @@ public class UserService {
 
 
         return Optional.of(UserPropertiesDTO.builder()
+                .uuid(properties.getUserUUID())
                 .about(properties.getAbout())
                 .avatarLink(properties.getAvatarLink())
                 .build());

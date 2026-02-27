@@ -8,12 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
-@RequestMapping("/profile")
+@RequestMapping("/")
 public class UserController {
 
     @Autowired
@@ -23,8 +21,8 @@ public class UserController {
     основная информация о пользователе
     Доступна всем, если допускают настройки приватности
      */
-    @GetMapping
-    public ResponseEntity<UserPropertiesDTO> showUser(
+    @GetMapping("/getUserByUsername")
+    public ResponseEntity<UserPropertiesDTO> getUser(
                                    @RequestHeader Map<String, String> headers, @RequestParam("targetUsername") String targetUsername){
 
         System.out.println("user properties extraction");
@@ -40,10 +38,19 @@ public class UserController {
         return userPresenceCheck.map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
 
 
+    }
+    /*
+    возвращаем список профилей на основе батч запроса
+     */
+
+    @GetMapping("/getUsersByUUID")
+    public ResponseEntity<List<UserPropertiesDTO>> getUsersByUUIDs(@RequestHeader Map<String, String> headers,
+                                                                   @RequestParam("uuids") String uuids){
+        SecurityContext securityContext = SecurityContext.generateContext(headers);
+
+        List<UUID> parsedList = Arrays.stream(uuids.split(",")).map(UUID::fromString).toList();
 
 
-
-
-
+        return ResponseEntity.ok(userService.getUsers(securityContext, parsedList));
     }
 }

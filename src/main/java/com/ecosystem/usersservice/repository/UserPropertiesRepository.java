@@ -4,6 +4,7 @@ import com.ecosystem.usersservice.model.UserProperties;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,7 +14,7 @@ public interface UserPropertiesRepository extends JpaRepository<UserProperties, 
 
     Optional<UserProperties> findByUserUUID(UUID uuid);
 
-
+    List<UserProperties> findAllByUserUUIDIn(List<UUID> uuids);
 
 
 }
