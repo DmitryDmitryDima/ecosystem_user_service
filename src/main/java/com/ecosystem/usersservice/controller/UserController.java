@@ -28,6 +28,8 @@ public class UserController {
         System.out.println("user properties extraction");
 
         SecurityContext securityContext = SecurityContext.generateContext(headers);
+
+        // target resolve происходит в api gateway
         UUID target = securityContext.getTargetUUID();
         if (target == null){
             return ResponseEntity.notFound().build();
