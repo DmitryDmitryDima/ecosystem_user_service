@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface UserPropertiesRepository extends JpaRepository<UserProperties, Long> {
+public interface UserPropertiesRepository extends JpaRepository<UserProperties, UUID> {
 
 
     Optional<UserProperties> findByUserUUID(UUID uuid);
