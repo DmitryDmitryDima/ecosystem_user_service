@@ -4,10 +4,8 @@ import com.ecosystem.usersservice.dto.UserPropertiesDTO;
 import com.ecosystem.usersservice.dto.events.UserCreationEvent;
 import com.ecosystem.usersservice.model.UserProperties;
 import com.ecosystem.usersservice.repository.UserPropertiesRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.transaction.Transactional;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
+
+
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
